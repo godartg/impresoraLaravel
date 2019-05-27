@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Mike42\Escpos\Printer;
-use Mike42\Escpos\PrintConnectors\FilePrintConnector;
+use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
 use Mike42\Escpos\EscposImage;
+use Illuminate\Support\Facades\Redirect;
 
 class PrinterController extends Controller
 {
@@ -14,8 +15,8 @@ class PrinterController extends Controller
 		return view('formularioImprimir');
 	}
     public function print(){
-    	$NOMBRE_IMPRESORA="epsonImpresora";
-    	$connector = new FilePrintConnector($NOMBRE_IMPRESORA);
+    	
+    	$connector = new WindowsPrintConnector("EPSONLX-300");
 		$printer = new Printer($connector);
 		/* Initialize */
 		$printer -> initialize();
@@ -50,33 +51,33 @@ class PrinterController extends Controller
 		}
 		$printer -> selectPrintMode(); // Reset
 		$printer -> cut();
-		/* Underline */
+		/* Underline 
 		for ($i = 0; $i < 3; $i++) {
 		    $printer -> setUnderline($i);
 		    $printer -> text("The quick brown fox jumps over the lazy dog\n");
 		}
 		$printer -> setUnderline(0); // Reset
 		$printer -> cut();
-		/* Cuts */
+		/* Cuts 
 		$printer -> text("Partial cut\n(not available on all printers)\n");
 		$printer -> cut(Printer::CUT_PARTIAL);
 		$printer -> text("Full cut\n");
 		$printer -> cut(Printer::CUT_FULL);
-		/* Emphasis */
+		/* Emphasis 
 		for ($i = 0; $i < 2; $i++) {
 		    $printer -> setEmphasis($i == 1);
 		    $printer -> text("The quick brown fox jumps over the lazy dog\n");
 		}
 		$printer -> setEmphasis(false); // Reset
 		$printer -> cut();
-		/* Double-strike (looks basically the same as emphasis) */
+		/* Double-strike (looks basically the same as emphasis) 
 		for ($i = 0; $i < 2; $i++) {
 		    $printer -> setDoubleStrike($i == 1);
 		    $printer -> text("The quick brown fox jumps over the lazy dog\n");
 		}
 		$printer -> setDoubleStrike(false);
 		$printer -> cut();
-		/* Fonts (many printers do not have a 'Font C') */
+		/* Fonts (many printers do not have a 'Font C') 
 		$fonts = array(
 		    Printer::FONT_A,
 		    Printer::FONT_B,
@@ -105,7 +106,7 @@ class PrinterController extends Controller
 		$printer -> feed();
 		$printer -> cut();
 		/* Graphics - this demo will not work on some non-Epson printers */
-		try {
+		/*try {
 		    $logo = EscposImage::load("resources/escpos-php.png", false);
 		    $imgModes = array(
 		        Printer::IMG_DEFAULT,
@@ -117,11 +118,12 @@ class PrinterController extends Controller
 		        $printer -> graphics($logo, $mode);
 		    }
 		} catch (Exception $e) {
-		    /* Images not supported on your PHP, or image file not found */
+		    /* Images not supported on your PHP, or image file not found 
 		    $printer -> text($e -> getMessage() . "\n");
 		}
+		
 		$printer -> cut();
-		/* Bit image */
+		/* Bit image 
 		try {
 		    $logo = EscposImage::load("resources/escpos-php.png", false);
 		    $imgModes = array(
@@ -134,11 +136,12 @@ class PrinterController extends Controller
 		        $printer -> bitImage($logo, $mode);
 		    }
 		} catch (Exception $e) {
-		    /* Images not supported on your PHP, or image file not found */
+		    /* Images not supported on your PHP, or image file not found 
 		    $printer -> text($e -> getMessage() . "\n");
 		}
+		*/
 		$printer -> cut();
-		/* QR Code - see also the more in-depth demo at qr-code.php */
+		 /*QR Code - see also the more in-depth demo at qr-code.php */
 		$testStr = "Testing 123";
 		$models = array(
 		    Printer::QR_MODEL_1 => "QR Model 1",
